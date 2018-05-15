@@ -15,17 +15,14 @@
  */
 package io.openshift.booster.service;
 
-import java.util.Map;
-
-import javax.ws.rs.POST;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.google.gson.Gson;
 
 import io.openshift.booster.JmsConfig;
 
@@ -41,17 +38,15 @@ public class GreetingEndpoint {
     public GreetingEndpoint(GreetingProperties properties) {
         this.properties = properties;
     }
-
-    @POST
+    
+    @GET
     @Path("/greeting")
     @Produces("application/json")
-    public Greeting greeting(@RequestBody String msg) {
-		Map map = new Gson().fromJson(msg, Map.class);
-		String response  = map.get("name") + "Hello " ;
+    public Greeting greeting(@QueryParam("name") @DefaultValue("World") String name) {
+		String response  = name + "Hello " ;
 		//conf.jmsTemplate().convertAndSend("q1.out",response);
         String message = String.format(properties.getMessage(), response);
         conf.jmsTemplate().convertAndSend("BG.QUE010.WHATSAPP_SEND",message);
         return new Greeting(message);
-        
     }
 }

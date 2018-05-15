@@ -10,7 +10,7 @@ import org.springframework.jms.core.JmsTemplate;
 public class JmsConfig {
 
 	//String BROKER_URL = "tcp://localhost:61616";
-	String BROKER_URL = "tcp://localhost:51616";
+	String BROKER_URL = "tcp://10.254.39.225:61616";
 	String BROKER_USERNAME = "whatsapp"; 
 	String BROKER_PASSWORD = "whatsapp";
 	
